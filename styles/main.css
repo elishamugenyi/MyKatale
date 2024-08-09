@@ -129,6 +129,38 @@ input[type="submit"]:hover {
     background-color: maroon;
     color: white;
 }
+/*css for ads on main page*/
+#adsContainer {
+    margin: 20px;
+  }
+  .ad-category {
+    margin-bottom: 20px;
+  }
+  .ad {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 5px;
+    display: inline-block;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    vertical-align: top;
+  }
+  .ad img {
+    max-width: 100%;
+  }
+  .ad button {
+    max-width: 100%;
+    height: 50px;
+    margin-left: 100px;
+    border-radius: 12px;
+    background-color: maroon;
+    color: white;
+  }
+  .ad button:hover {
+    background-color: crimson;
+    color: white;
+  }
+/*end of ads css*/
 
 footer {
     display: flex;
