@@ -6,17 +6,23 @@ body {
 
 header {
     align-items: center;
-    padding: 1em;
+    padding: 10px;
+    height: fit-content;
 }
 .logo img, .logo h1 {
     display: flex;
     flex-direction: column;
     margin-left: 650px;
     border-radius: 70px;
+    height: 160px;
+}
+.icon {
+    margin-left: 1500px;
+    height: fit-content;
 }
 nav {
     margin-right: 70px;
-   
+    height: fit-content;
 }
 nav ul {
     list-style-type:none;
@@ -44,14 +50,28 @@ nav ul li a:hover {
     border-radius: 4px;
     color: red;
 }
+.vendor {
+    width: 100%;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+}
+/*css for main class in register page/form*/
+.register,.update {
+    width: 100%;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+}
+.register form, .register h2, .update form, .update h2 {
+    margin-left: 20%;
+}
 main {
     width: 100%;
     padding: 2em;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
-
 form {
     display: flex;
     flex-direction: column;
@@ -62,8 +82,9 @@ form {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-#vendor {
-    margin-left: 300px;
+.loginvendor form {
+    margin-left: 30%;
+    width: 40%;
 }
 #vendor a {
    margin-top: 40px;
@@ -72,14 +93,26 @@ label {
     margin-top: 10px;
 }
 
-input, select, textarea {
-    width: 80%;
+input, textarea {
+    width: 90%;
     padding: 20px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
+select {
+    padding: 20px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+}
+input[type="radio"] {
+    padding: 0.5rem;
+    margin: 15px;
+    margin-bottom: 30px;
+    margin-right: 70px;
+}
 input[type="submit"] {
     background-color: crimson;
     color: white;
@@ -87,6 +120,8 @@ input[type="submit"] {
     padding: 1.5rem;
     cursor: pointer;
     margin-top: 20px;
+    margin-left: 20%;
+    width: 50%;
     border-radius: 5px;
 }
 
