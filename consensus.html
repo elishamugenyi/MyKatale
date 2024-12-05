@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consensus Voting</title>
+    <link rel="stylesheet" href="styles/consensus.css">
+    <link rel="stylesheet" href="styles/small-view.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <script defer src="scripts/getdates.js"></script>
+    <script defer src="scripts/consensus.js"></script>
+</head>
+<body>
+    <h1>Consensus Voting</h1>
+    <form id="votingForm">
+        <h2>Rank the Items</h2>
+        <label for="memberName">Team Member Name: </label>
+        <input type="text" id="memberName" name="memberName" required>
+        <ol>
+            <li>
+                <label for="item1">Fanny pack of food (cheese, salami, etc.): </label>
+                <input type="number" id="item1" name="item1" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item2">Plastic-covered map of the region: </label>
+                <input type="number" id="item2" name="item2" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item3">Six personal flotation devices: </label>
+                <input type="number" id="item3" name="item3" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item4">Two fishing poles (broken): </label>
+                <input type="number" id="item4" name="item4" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item5">Set of clothes for three (wet): </label>
+                <input type="number" id="item5" name="item5" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item6">One yellow Frisbee: </label>
+                <input type="number" id="item6" name="item6" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item7">Water purification tablets: </label>
+                <input type="number" id="item7" name="item7" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item8">Duct tape (one 30’ roll): </label>
+                <input type="number" id="item8" name="item8" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item9">Whiskey (one pint, 180 proof): </label>
+                <input type="number" id="item9" name="item9" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item10">Insect repellant (one bottle): </label>
+                <input type="number" id="item10" name="item10" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item11">Matches (30, dry): </label>
+                <input type="number" id="item11" name="item11" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item12">Parachute cord (35’): </label>
+                <input type="number" id="item12" name="item12" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item13">Compass: </label>
+                <input type="number" id="item13" name="item13" min="1" max="14" required>
+            </li>
+            <li>
+                <label for="item14">Six sleeping bags (synthetic): </label>
+                <input type="number" id="item14" name="item14" min="1" max="14" required>
+            </li>
+        </ol>
+        <h2>Reasons for Ranking</h2>
+        <textarea id="reasons" name="reasons" rows="4" cols="50" placeholder="Enter your reasons here..."></textarea>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Final Rankings</h2>
+    <ol id="finalRankings"></ol>
+
+
+    <footer>
+        <div class="footer-left">
+          <a href="#">Wilderness Survival Activity</a>
+          <a href="#">For use only in our assignment</a>
+        </div>
+  
+        <div class="footer-right">
+          <h4>Our Team's Consensus</h4>
+          <p>
+            <span id="currentyear"></span> Group 09
+          </p>
+          <p id="lastModified">last</p>
+        </div>
+      </footer>
+
+</body>
+</html>
