@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const form = document.getElementById('votingForm');
+    const loadMemberDataButton = document.getElementById('loadMemberData');
 
     // Load saved data from local storage
-    loadSavedData();
+    loadMemberDataButton.addEventListener('click', loadMemberData);
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         saveData();
         alert('Your rankings and reasons have been saved!');
+        displayFinalRankings();
     });
 
     function saveData() {
@@ -24,7 +26,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
         localStorage.setItem('teamData', JSON.stringify(teamData));
     }
 
-    function loadSavedData() {
+    function loadMemberData() {
+        const memberName = document.getElementById('memberName').value;
+        const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
+
+        if (teamData[memberName]) {
+            const { rankings, reasons } = teamData[memberName];
+            for (let i = 1; i <= 14; i++) {
+                document.getElementById(`item${i}`).value = rankings[`item${i}`];
+            }
+            document.getElementById('reasons').value = reasons;
+        } else {
+            // Clear the form if no data is found for the entered member name
+            for (let i = 1; i <= 14; i++) {
+                document.getElementById(`item${i}`).value = '';
+            }
+            document.getElementById('reasons').value = '';
+        }
+    }
+
+    /*function loadSavedData() {
         const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
 
         // Load the data for the first team member (if any)
@@ -37,7 +58,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             document.getElementById('reasons').value = reasons;
         }
-    }
+    }*/
 
     function aggregateRankings() {
         const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
