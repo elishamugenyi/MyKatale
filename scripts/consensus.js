@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
           };
         
           // Initialize Firebase
-          const app = initializeApp(firebaseConfig);
+          firebase.initializeApp(firebaseConfig);
+          const db= firebase.firestore();
           const analytics = getAnalytics(app);
 
     const form = document.getElementById('votingForm');
