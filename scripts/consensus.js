@@ -1,4 +1,21 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+
+    // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCkOhP0r21SF_BsaCYdEohphxHWl1okJuE",
+            authDomain: "consensus-activity.firebaseapp.com",
+            projectId: "consensus-activity",
+            storageBucket: "consensus-activity.firebasestorage.app",
+            messagingSenderId: "247343994715",
+            appId: "1:247343994715:web:bf11b8a317a7b3744d6c7e",
+            measurementId: "G-BMQMR9TJ43"
+          };
+        
+          // Initialize Firebase
+          const app = initializeApp(firebaseConfig);
+          const analytics = getAnalytics(app);
+
     const form = document.getElementById('votingForm');
     const loadMemberDataButton = document.getElementById('loadMemberData');
     const resetDataButton = document.getElementById('resetData');
@@ -22,17 +39,43 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
         const reasons = document.getElementById('reasons').value;
 
-        const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
-        teamData[memberName] = { rankings, reasons };
+        db.collection('teamData').doc(memberName).set({
+            rankings: rankings,
+            reasons: reasons
+        }).then(() => {
+            console.log("Document successfully written!");
+        }).catch((error) => {
+            console.error("Error writing document: ", error);
+        });
+        //const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
+        //teamData[memberName] = { rankings, reasons };
 
-        localStorage.setItem('teamData', JSON.stringify(teamData));
+        //localStorage.setItem('teamData', JSON.stringify(teamData));
     }
 
     function loadMemberData() {
         const memberName = document.getElementById('memberName').value;
-        const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
-
-        if (teamData[memberName]) {
+        //const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
+        db.collection('teamData').doc(memberName).get().then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                const { rankings, reasons } = data;
+                for (let i = 1; i <= 14; i++) {
+                    document.getElementById(`item${i}`).value = rankings[`item${i}`];
+                }
+                document.getElementById('reasons').value = reasons;
+            } else {
+                // Clear the form if no data is found for the selected member name
+                for (let i = 1; i <= 14; i++) {
+                    document.getElementById(`item${i}`).value = '';
+                }
+                document.getElementById('reasons').value = '';
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
+       /* if (teamData[memberName]) {
             const { rankings, reasons } = teamData[memberName];
             for (let i = 1; i <= 14; i++) {
                 document.getElementById(`item${i}`).value = rankings[`item${i}`];
@@ -45,9 +88,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             document.getElementById('reasons').value = '';
         }
-    }
+    }*/
 
     function resetData() {
+        if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+            db.collection('teamData').get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    doc.ref.delete();
+                });
+            }).then(() => {
+                alert('All data has been reset.');
+                // Clear the form
+                document.getElementById('memberName').value = '';
+                for (let i = 1; i <= 14; i++) {
+                    document.getElementById(`item${i}`).value = '';
+                }
+                document.getElementById('reasons').value = '';
+                // Clear the final rankings
+                document.getElementById('finalRankings').innerHTML = '';
+            }).catch((error) => {
+                console.error("Error removing documents: ", error);
+            });
+        }
+    }
+
+    /*function resetData() {
         if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
             localStorage.removeItem('teamData');
             alert('All data has been reset.');
@@ -60,24 +125,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // Clear the final rankings
             document.getElementById('finalRankings').innerHTML = '';
         }
-    }
-
-    /*function loadSavedData() {
-        const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
-
-        // Load the data for the first team member (if any)
-        const firstMember = Object.keys(teamData)[0];
-        if (firstMember) {
-            const { rankings, reasons } = teamData[firstMember];
-            document.getElementById('memberName').value = firstMember;
-            for (let i = 1; i <= 14; i++) {
-                document.getElementById(`item${i}`).value = rankings[`item${i}`];
-            }
-            document.getElementById('reasons').value = reasons;
-        }
     }*/
 
     function aggregateRankings() {
+        db.collection('teamData').get().then((querySnapshot) => {
+            const aggregatedRankings = {};
+            querySnapshot.forEach((doc) => {
+                const { rankings } = doc.data();
+                for (const item in rankings) {
+                    if (!aggregatedRankings[item]) {
+                        aggregatedRankings[item] = 0;
+                    }
+                    aggregatedRankings[item] += parseInt(rankings[item]);
+                }
+            });
+
+            const sortedItems = Object.keys(aggregatedRankings).sort((a, b) => aggregatedRankings[a] - aggregatedRankings[b]);
+            displayFinalRankings(sortedItems);
+        });
+    }
+
+    /*function aggregateRankings() {
         const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
         const aggregatedRankings = {};
 
@@ -93,7 +161,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         const sortedItems = Object.keys(aggregatedRankings).sort((a, b) => aggregatedRankings[a] - aggregatedRankings[b]);
         return sortedItems;
-    }
+    }*/
 
     function displayFinalRankings() {
         const sortedItems = aggregateRankings();
