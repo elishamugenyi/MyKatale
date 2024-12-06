@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const form = document.getElementById('votingForm');
     const loadMemberDataButton = document.getElementById('loadMemberData');
+    const resetDataButton = document.getElementById('resetData');
 
     // Load saved data from local storage
     loadMemberDataButton.addEventListener('click', loadMemberData);
+    resetDataButton.addEventListener('click', resetData);
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -42,6 +44,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 document.getElementById(`item${i}`).value = '';
             }
             document.getElementById('reasons').value = '';
+        }
+    }
+
+    function resetData() {
+        if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+            localStorage.removeItem('teamData');
+            alert('All data has been reset.');
+            // Clear the form
+            document.getElementById('memberName').value = '';
+            for (let i = 1; i <= 14; i++) {
+                document.getElementById(`item${i}`).value = '';
+            }
+            document.getElementById('reasons').value = '';
+            // Clear the final rankings
+            document.getElementById('finalRankings').innerHTML = '';
         }
     }
 
