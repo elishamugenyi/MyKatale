@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
+       /* const firebaseConfig = {
             apiKey: "AIzaSyCkOhP0r21SF_BsaCYdEohphxHWl1okJuE",
             authDomain: "consensus-activity.firebaseapp.com",
             projectId: "consensus-activity",
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           // Initialize Firebase
           firebase.initializeApp(firebaseConfig);
           const db= firebase.firestore();
-          const analytics = getAnalytics(app);
+          const analytics = getAnalytics(app); */
 
     const form = document.getElementById('votingForm');
     const loadMemberDataButton = document.getElementById('loadMemberData');
@@ -40,24 +40,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
         const reasons = document.getElementById('reasons').value;
 
-        db.collection('teamData').doc(memberName).set({
+        /*db.collection('teamData').doc(memberName).set({
             rankings: rankings,
             reasons: reasons
         }).then(() => {
             console.log("Document successfully written!");
         }).catch((error) => {
             console.error("Error writing document: ", error);
-        });
-        //const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
-        //teamData[memberName] = { rankings, reasons };
+        });*/
+        const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
+        teamData[memberName] = { rankings, reasons };
 
-        //localStorage.setItem('teamData', JSON.stringify(teamData));
+        localStorage.setItem('teamData', JSON.stringify(teamData));
     }
 
     function loadMemberData() {
         const memberName = document.getElementById('memberName').value;
-        //const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
-        db.collection('teamData').doc(memberName).get().then((doc) => {
+        const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
+             if (teamData[memberName]) {
+            const { rankings, reasons } = teamData[memberName];
+            for (let i = 1; i <= 14; i++) {
+                document.getElementById(`item${i}`).value = rankings[`item${i}`];
+            }
+            document.getElementById('reasons').value = reasons;
+        } else {
+            // Clear the form if no data is found for the entered member name
+            for (let i = 1; i <= 14; i++) {
+                document.getElementById(`item${i}`).value = '';
+            }
+            document.getElementById('reasons').value = '';
+        }
+    }
+        /*db.collection('teamData').doc(memberName).get().then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
                 const { rankings, reasons } = data;
@@ -75,23 +89,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }).catch((error) => {
             console.log("Error getting document:", error);
         });
-    }
-       /* if (teamData[memberName]) {
-            const { rankings, reasons } = teamData[memberName];
-            for (let i = 1; i <= 14; i++) {
-                document.getElementById(`item${i}`).value = rankings[`item${i}`];
-            }
-            document.getElementById('reasons').value = reasons;
-        } else {
-            // Clear the form if no data is found for the entered member name
-            for (let i = 1; i <= 14; i++) {
-                document.getElementById(`item${i}`).value = '';
-            }
-            document.getElementById('reasons').value = '';
-        }
     }*/
 
-    function resetData() {
+
+    /*function resetData() {
         if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
             db.collection('teamData').get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -112,8 +113,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             });
         }
     }
-
-    /*function resetData() {
+*/
+    function resetData() {
         if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
             localStorage.removeItem('teamData');
             alert('All data has been reset.');
@@ -126,9 +127,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // Clear the final rankings
             document.getElementById('finalRankings').innerHTML = '';
         }
-    }*/
+    }
 
-    function aggregateRankings() {
+    /*function aggregateRankings() {
         db.collection('teamData').get().then((querySnapshot) => {
             const aggregatedRankings = {};
             querySnapshot.forEach((doc) => {
@@ -144,9 +145,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const sortedItems = Object.keys(aggregatedRankings).sort((a, b) => aggregatedRankings[a] - aggregatedRankings[b]);
             displayFinalRankings(sortedItems);
         });
-    }
+    }*/
 
-    /*function aggregateRankings() {
+    function aggregateRankings() {
         const teamData = JSON.parse(localStorage.getItem('teamData')) || {};
         const aggregatedRankings = {};
 
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         const sortedItems = Object.keys(aggregatedRankings).sort((a, b) => aggregatedRankings[a] - aggregatedRankings[b]);
         return sortedItems;
-    }*/
+    }
 
     function displayFinalRankings() {
         const sortedItems = aggregateRankings();
