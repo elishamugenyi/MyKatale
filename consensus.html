@@ -16,7 +16,16 @@
     <form id="votingForm">
         <h2>Rank the Items</h2>
         <label for="memberName">Team Member Name: </label>
-        <input type="text" id="memberName" name="memberName" required>
+        <select id="memberName" name="memberName" required>
+            <option value="" disabled selected>Select your name</option>
+            <option value="Elisha">Elisha</option>
+            <option value="Jayna">Jayna</option>
+            <option value="Vanessa">Vanessa</option>
+            <option value="Ojo">Ojo</option>
+            <option value="Santiago">Santiago</option>
+            <option value="Tyler">Tyler</option>
+            <option value="Monica">Monica</option>
+        </select>
         <button type="button" id="loadMemberData">Load Member Data</button>
         <ol>
             <li>
